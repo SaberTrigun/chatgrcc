@@ -7,12 +7,17 @@
 using namespace std;
 
 int main(){
-	int sockfd, new_sockfd, yes=1;
+	int sockfd, new_sockfd, yes=1, snd;
 	const int PORT = 7890;
 	char buf[1024];
 	struct sockaddr_in host_addr, client_addr;
 	socklen_t sin_size;
-
+	char send_msg[1024];
+	send_msg[0]='f';
+	send_msg[1]='u';
+	send_msg[2]='c';
+	send_msg[3]='k';
+	send_msg[4]='	';
 
 	if ((sockfd = socket(PF_INET, SOCK_STREAM, 0))!=-1)
 		cout << "sockfd create......" << sockfd << endl;
@@ -39,6 +44,13 @@ int main(){
 		if (new_sockfd!=-1)
 			cout << "connecting......" << endl;
 		cout << "incoming connection" << endl;
+		for(int i=0; i<=5; i++)
+		snd=send(new_sockfd, &send_msg[i], 1, 0);
+
+
+
+
+
 		close (new_sockfd);
 	}
 }
