@@ -7,17 +7,14 @@
 using namespace std;
 
 int main(){
-	int sockfd, new_sockfd, yes=1, snd;
+	int sockfd, new_sockfd, yes=1, snd, rcv;
 	const int PORT = 7890;
 	char buf[1024];
 	struct sockaddr_in host_addr, client_addr;
 	socklen_t sin_size;
-	char send_msg[1024];
-	send_msg[0]='f';
-	send_msg[1]='u';
-	send_msg[2]='c';
-	send_msg[3]='k';
-	send_msg[4]='	';
+	vector <char> send_msg={'F'};
+
+
 
 	if ((sockfd = socket(PF_INET, SOCK_STREAM, 0))!=-1)
 		cout << "sockfd create......" << sockfd << endl;
@@ -46,8 +43,10 @@ int main(){
 		cout << "incoming connection" << endl;
 		for(int i=0; i<=5; i++)
 		snd=send(new_sockfd, &send_msg[i], 1, 0);
-
-
+		rcv=recv(new_sockfd, buf, 1, 0);
+		cout<<rcv<<endl;
+		printf("%c\n", buf[0]);
+		//cout<<hex<<buf[0];
 
 
 
