@@ -12,7 +12,7 @@ int main(){
 	char buf[1024];
 	struct sockaddr_in host_addr, client_addr;
 	socklen_t sin_size;
-	vector <char> send_msg={'F'};
+	vector <char> send_msg={'X'};
 
 
 
@@ -39,17 +39,17 @@ int main(){
 		sin_size=sizeof(struct sockaddr_in);
 		new_sockfd=accept(sockfd, (struct sockaddr *)&client_addr, &sin_size);
 		if (new_sockfd!=-1)
-			cout << "connecting......" << endl;
-		cout << "incoming connection" << endl;
-		for(int i=0; i<=5; i++)
-		snd=send(new_sockfd, &send_msg[i], 1, 0);
-		rcv=recv(new_sockfd, buf, 1, 0);
-		cout<<rcv<<endl;
+			cout << "connecting......" << endl << "incoming connection" << endl;
+		//for(int i=0; i<=5; i++)
+		snd=write(new_sockfd, &send_msg[0], 1);
+		rcv=read(new_sockfd, &buf, 1);
+		cout<<"Recvd..."<<rcv<<endl;
+		cout<<"Send..."<<snd<<endl;
 		printf("%c\n", buf[0]);
 		//cout<<hex<<buf[0];
 
 
 
-		close (new_sockfd);
+		//close (new_sockfd);
 	}
 }
