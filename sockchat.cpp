@@ -4,6 +4,8 @@
 #include <netinet/in.h>
 #include <unistd.h>
 #include <vector>
+#include "f_dump.hpp"
+#include <arpa/inet.h>
 using namespace std;
 
 int main(){
@@ -24,8 +26,9 @@ int main(){
 
 	host_addr.sin_family=AF_INET;
 	host_addr.sin_port=htons(PORT);
-	host_addr.sin_addr.s_addr=0;
-
+	inet_aton("192.168.1.4", &host_addr.sin_addr);
+	
+	cout<<inet_ntoa(host_addr.sin_addr)<<endl;
 	memset(&(host_addr.sin_zero), '\0', 8);
 	
 	if (bind(sockfd, (struct sockaddr *)&host_addr, sizeof(struct sockaddr))!=-1)
@@ -40,16 +43,18 @@ int main(){
 		new_sockfd=accept(sockfd, (struct sockaddr *)&client_addr, &sin_size);
 		if (new_sockfd!=-1)
 			cout << "connecting......" << endl << "incoming connection" << endl;
-		//for(int i=0; i<=5; i++)
-		snd=write(new_sockfd, &send_msg[0], 1);
-		rcv=read(new_sockfd, &buf, 1);
-		cout<<"Recvd..."<<rcv<<endl;
-		cout<<"Send..."<<snd<<endl;
-		printf("%c\n", buf[0]);
-		//cout<<hex<<buf[0];
+		send(new_sockfd, "Hy, welcome to grcc", 19, 0); cout<<send<<endl;
+		rcv=recv(new_sockfd, &buf, 1024, 0);
+		while (rcv>0)
+		{
+			printf("RECV: %d байтов\n", rcv);
+			dump(buf, rcv);
+			rcv=recv(new_sockfd, &buf, 1024, 0);
+			cout<<"...Recvd..."<<rcv<<endl;
+		}
 
 
 
-		//close (new_sockfd);
+		close (new_sockfd);
 	}
 }
