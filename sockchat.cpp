@@ -6,7 +6,31 @@
 #include <vector>
 #include "f_dump.hpp"
 #include <arpa/inet.h>
+#include <fstream>
 using namespace std;
+
+void f_writeFile(const char *data_buffer){
+	setlocale(LC_ALL, "Russian");
+	ofstream fs;
+	fs.open("chat_history.txt", ofstream::app);
+	if(!fs.is_open())
+		cout<<"Error open"<<endl;	
+	fs <<data_buffer<<"\n" ;
+
+	fs.close();
+
+}
+
+void f_readFlile(){
+	setlocale(LC_ALL, "Russian");
+        ifstream fs;
+        fs.open("chat_history.txt", ofstream::app);
+	if(!fs.is_open())
+                cout<<"Error open"<<endl;
+
+
+}
+
 
 int main(){
 	int sockfd, new_sockfd, yes=1, snd, rcv;
@@ -49,8 +73,8 @@ int main(){
 		{
 			printf("RECV: %d байтов\n", rcv);
 			dump(buf, rcv);
+			f_writeFile(buf);
 			rcv=recv(new_sockfd, &buf, 1024, 0);
-			cout<<"...Recvd..."<<rcv<<endl;
 		}
 
 
