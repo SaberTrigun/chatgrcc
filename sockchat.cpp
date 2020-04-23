@@ -12,22 +12,24 @@ using namespace std;
 void f_writeFile(const char *data_buffer){
 	setlocale(LC_ALL, "Russian");
 	ofstream fs;
-	fs.open("chat_history.txt", ofstream::app);
+	fs.open("chat_history.log", ofstream::app);
 	if(!fs.is_open())
 		cout<<"Error open"<<endl;	
-	fs <<data_buffer<<"\n" ;
+	fs << data_buffer<<"\n" ;
 
 	fs.close();
 
 }
 
-void f_readFlile(){
+string f_readFlile(string *cmd_history){
+	string history;
 	setlocale(LC_ALL, "Russian");
         ifstream fs;
-        fs.open("chat_history.txt", ofstream::app);
+        fs.open("chat_history.log", ofstream::app);
 	if(!fs.is_open())
                 cout<<"Error open"<<endl;
-
+	
+	return history;
 
 }
 
@@ -73,7 +75,7 @@ int main(){
 		{
 			printf("RECV: %d байтов\n", rcv);
 			dump(buf, rcv);
-			f_writeFile(buf);
+			f_writeFile(buf); //write history in file
 			rcv=recv(new_sockfd, &buf, 1024, 0);
 		}
 
