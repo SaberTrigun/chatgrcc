@@ -16,7 +16,7 @@ void f_writeFile(const char *data_buffer){
 	if(!fs.is_open())
 		cout<<"Error open"<<endl;	
 	fs << data_buffer<<"\n" ;
-
+	int test=5;
 	fs.close();
 
 }
