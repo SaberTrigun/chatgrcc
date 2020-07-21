@@ -33,7 +33,6 @@ string f_readFlile(string *cmd_history){
 
 }
 
-its a test
 int main(){
 	int sockfd, new_sockfd, yes=1, snd, rcv;
 	const int PORT = 7890;
