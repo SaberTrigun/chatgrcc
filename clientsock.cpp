@@ -8,6 +8,20 @@
 #include "f_dump.hpp"
 using namespace std;
 
+string f_recv(int sockfd, int new_sockfd){
+	char buf[1024];
+	new_sockfd=recv(sockfd, buf, 30, 0);
+	for (int i=0; i<=30; i++)
+		return(buf);	
+	cout << endl;
+}
+
+void f_send(int sockfd, int new_sockfd){
+	new_sockfd=send(sockfd, "Hello, i am client and i am work!", 33, 0);
+}
+
+
+
 int main(){
 	int sockfd, new_sockfd, yes=1, snd, rcv;
 	const int PORT = 7890;
@@ -24,15 +38,25 @@ int main(){
 
 	client_addr.sin_family=AF_INET;
 	client_addr.sin_port=htons(PORT);
-	inet_aton("192.168.1.4", &client_addr.sin_addr);
+	inet_aton("192.168.173.37", &client_addr.sin_addr);
 
 	cout<<inet_ntoa(client_addr.sin_addr)<<endl;
 
 	memset(&(host_addr.sin_zero), '\0', 8);
 	
+	new_sockfd=connect(sockfd, (struct sockaddr *)&client_addr, sizeof(client_addr));
+	if (new_sockfd)
+	{
+		perror("error");
+		exit(1);
+	}
+//Принимаю приветствие от сервера	
+	cout << f_recv(sockfd, new_sockfd) << endl;
 
+//Отправляю серверу приветствие 
+	f_send(sockfd, new_sockfd);	
 	
-	while (1)	
+	/*while (1)	
 	{
 		new_sockfd=connect(sockfd, (struct sockaddr *)&client_addr, sizeof(client_addr));
 		if (new_sockfd==0)
@@ -48,7 +72,7 @@ int main(){
 			rcv=recv(new_sockfd, &buf, 1024, 0);
 		}
 		close(new_sockfd);
-	}
+	}*/
 		
 		
 	 

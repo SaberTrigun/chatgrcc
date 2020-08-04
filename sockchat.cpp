@@ -51,7 +51,7 @@ int main(){
 
 	host_addr.sin_family=AF_INET;
 	host_addr.sin_port=htons(PORT);
-	inet_aton("192.168.1.4", &host_addr.sin_addr);
+	inet_aton("192.168.173.37", &host_addr.sin_addr);
 	
 	cout<<inet_ntoa(host_addr.sin_addr)<<endl;
 	memset(&(host_addr.sin_zero), '\0', 8);
@@ -68,7 +68,7 @@ int main(){
 		new_sockfd=accept(sockfd, (struct sockaddr *)&client_addr, &sin_size);
 		if (new_sockfd!=-1)
 			cout << "connecting......" << endl << "incoming connection" << endl;
-		send(new_sockfd, "Hy, welcome to grcc", 19, 0); cout<<send<<endl;
+		send(new_sockfd, "Hy, welcome to grcc.com!!! O_0", 19, 0); cout<<send<<endl;
 		rcv=recv(new_sockfd, &buf, 1024, 0);
 		while (rcv>0)
 		{
