@@ -16,8 +16,8 @@ string f_recv(int sockfd, int new_sockfd){
 	cout << endl;
 }
 
-void f_send(int sockfd, int new_sockfd){
-	new_sockfd=send(sockfd, "Hello, i am client and i am work!", 33, 0);
+void f_send(int sockfd, int new_sockfd, string message){
+	new_sockfd=send(sockfd, &message, message.size(), 0);
 }
 
 
@@ -29,7 +29,8 @@ int main(){
 	struct sockaddr_in host_addr, client_addr, dest_srv_addr;
 	socklen_t sin_size;
 	vector <char> send_msg={'F'};
-		
+	string message;
+
 	if ((sockfd = socket(PF_INET, SOCK_STREAM, 0))!=-1)
 		cout << "sockfd create......" << sockfd << endl;
 
@@ -50,17 +51,21 @@ int main(){
 		perror("error");
 		exit(1);
 	}
-//Принимаю приветствие от сервера	
-	cout << f_recv(sockfd, new_sockfd) << endl;
 
-//Отправляю серверу приветствие 
-	f_send(sockfd, new_sockfd);	
-	
+
+
+	while (1)
+	{
+
+		
+	//	cout << f_recv(sockfd, new_sockfd) << endl;
+
+		cin >> message;
+		f_send(sockfd, new_sockfd, message);
+
+	}	
 	/*while (1)	
 	{
-		new_sockfd=connect(sockfd, (struct sockaddr *)&client_addr, sizeof(client_addr));
-		if (new_sockfd==0)
-			cout<<"Connected!"<<endl;
 		rcv=read(new_sockfd, buf, 1024);
 		for(int i=0; i<=rcv; i++)
 		cout<<rcv;
