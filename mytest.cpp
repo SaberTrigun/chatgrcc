@@ -4,10 +4,9 @@ using namespace std;
 
 int main (){
 	string msg;
-	cin >> msg;
+	getline(cin, msg);
 	cout << endl;
 	int sizeMsg = 0;
-	sizeMsg = msg.size();
-	cout << sizeMsg << endl;
-
+	sizeMsg=msg.size();
+	cout << sizeMsg << endl << msg << endl;
 }

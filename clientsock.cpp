@@ -16,8 +16,13 @@ string f_recv(int sockfd, int new_sockfd){
 	cout << endl;
 }
 
-void f_send(int sockfd, int new_sockfd, string message){
-	new_sockfd=send(sockfd, &message, message.size(), 0);
+bool f_send(int sockfd, int new_sockfd, string message){
+	bool flag;
+	new_sockfd=send(sockfd, &message, message.size()-1, 0);
+	if (new_sockfd > 0)
+		return(flag=1);
+	else
+		return(flag=0);
 }
 
 
@@ -30,6 +35,7 @@ int main(){
 	socklen_t sin_size;
 	vector <char> send_msg={'F'};
 	string message;
+	bool flag_send;	
 
 	if ((sockfd = socket(PF_INET, SOCK_STREAM, 0))!=-1)
 		cout << "sockfd create......" << sockfd << endl;
@@ -60,10 +66,24 @@ int main(){
 		
 	//	cout << f_recv(sockfd, new_sockfd) << endl;
 
-		cin >> message;
-		f_send(sockfd, new_sockfd, message);
+		getline(cin, message);
+		flag_send = f_send(sockfd, new_sockfd, message);
+		if (flag_send > 0)
+		{
+			cout << "Message sent!" << endl;
+		}	
+		flag_send = 0;	
+	}
 
-	}	
+
+
+
+
+
+
+
+
+	
 	/*while (1)	
 	{
 		rcv=read(new_sockfd, buf, 1024);

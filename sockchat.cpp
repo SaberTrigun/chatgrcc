@@ -72,10 +72,11 @@ int main(){
 		rcv=recv(new_sockfd, &buf, 1024, 0);
 		while (rcv>0)
 		{
-			printf("RECV: %d байтов\n", rcv);
-			dump(buf, rcv);
-			f_writeFile(buf); //write history in file
-			rcv=recv(new_sockfd, &buf, 1024, 0);
+			//printf("RECV: %d байтов\n", rcv);
+			//dump(buf, rcv);
+			//f_writeFile(buf); //write history in file
+			//rcv=recv(new_sockfd, &buf, 1024, 0);
+			cout << recv(new_sockfd, &buf, 1024,0) << endl;
 		}
 
 
