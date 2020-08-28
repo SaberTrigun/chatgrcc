@@ -34,12 +34,12 @@ string f_readFlile(string *cmd_history){
 }
 
 int main(){
-	int sockfd, new_sockfd, yes=1, snd, rcv;
-	const int PORT = 7890;
-	char buf[1024];
-	struct sockaddr_in host_addr, client_addr;
-	socklen_t sin_size;
-	vector <char> send_msg={'X'};
+	int 		sockfd, new_sockfd, yes=1, snd, rcv;
+	const int 	PORT = 7890;
+	char 		buf[1024];
+	struct 		sockaddr_in host_addr, client_addr;
+	socklen_t 	sin_size;
+	vector <char> 	send_msg={'X'};
 
 
 
@@ -49,8 +49,8 @@ int main(){
 	if (setsockopt(sockfd, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(int))!=-1)
 		cout << "setsockopt accepted......" << setsockopt << endl;
 
-	host_addr.sin_family=AF_INET;
-	host_addr.sin_port=htons(PORT);
+	host_addr.sin_family = AF_INET;
+	host_addr.sin_port = htons(PORT);
 	inet_aton("192.168.173.37", &host_addr.sin_addr);
 	
 	cout<<inet_ntoa(host_addr.sin_addr)<<endl;
@@ -72,11 +72,11 @@ int main(){
 		rcv=recv(new_sockfd, &buf, 1024, 0);
 		while (rcv>0)
 		{
-			//printf("RECV: %d байтов\n", rcv);
-			//dump(buf, rcv);
-			//f_writeFile(buf); //write history in file
-			//rcv=recv(new_sockfd, &buf, 1024, 0);
-			cout << recv(new_sockfd, &buf, 1024,0) << endl;
+			printf("RECV: %d байтов\n", rcv);
+			dump(buf, rcv);
+			f_writeFile(buf); //write history in file
+			rcv=recv(new_sockfd, buf, 1024, 0);
+			//cout << recv(new_sockfd, &buf, 1024,0) << endl;
 		}
 
 

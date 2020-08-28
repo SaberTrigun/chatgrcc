@@ -18,7 +18,7 @@ string f_recv(int sockfd, int new_sockfd){
 
 bool f_send(int sockfd, int new_sockfd, string message){
 	bool flag;
-	new_sockfd=send(sockfd, &message, message.size()-1, 0);
+	new_sockfd=send(sockfd, message.c_str(), message.size(), 0);
 	if (new_sockfd > 0)
 		return(flag=1);
 	else
