@@ -9,6 +9,7 @@
 #include <fstream>
 using namespace std;
 
+//Функция записи истории в файл
 void f_writeFile(const char *data_buffer){
 	setlocale(LC_ALL, "Russian");
 	ofstream fs;
@@ -21,6 +22,7 @@ void f_writeFile(const char *data_buffer){
 
 }
 
+//Функция чтения из лог файла, непомню зачем, потом использую её
 string f_readFlile(string *cmd_history){
 	string history;
 	setlocale(LC_ALL, "Russian");
@@ -40,8 +42,6 @@ int main(){
 	struct 		sockaddr_in host_addr, client_addr;
 	socklen_t 	sin_size;
 	vector <char> 	send_msg={'X'};
-
-
 
 	if ((sockfd = socket(PF_INET, SOCK_STREAM, 0))!=-1)
 		cout << "sockfd create......" << sockfd << endl;
@@ -74,9 +74,8 @@ int main(){
 		{
 			printf("RECV: %d байтов\n", rcv);
 			dump(buf, rcv);
-			f_writeFile(buf); //write history in file
+			f_writeFile(buf); // Запись истории в файл
 			rcv=recv(new_sockfd, buf, 1024, 0);
-			//cout << recv(new_sockfd, &buf, 1024,0) << endl;
 		}
 
 
