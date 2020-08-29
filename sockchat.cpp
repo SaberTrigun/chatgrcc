@@ -7,6 +7,8 @@
 #include "f_dump.hpp"
 #include <arpa/inet.h>
 #include <fstream>
+#include <ifaddrs.h>
+#include <sys/types.h>
 using namespace std;
 
 //Функция записи истории в файл
@@ -39,7 +41,7 @@ int main(){
 	int 		sockfd, new_sockfd, yes=1, snd, rcv;
 	const int 	PORT = 7890;
 	char 		buf[1024];
-	struct 		sockaddr_in host_addr, client_addr;
+	struct 		host_addr, client_addr;
 	socklen_t 	sin_size;
 	vector <char> 	send_msg={'X'};
 
@@ -49,14 +51,20 @@ int main(){
 	if (setsockopt(sockfd, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(int))!=-1)
 		cout << "setsockopt accepted......" << setsockopt << endl;
 
-	host_addr.sin_family = AF_INET;
+	/*host_addr.sin_family = AF_INET;
 	host_addr.sin_port = htons(PORT);
 	inet_aton("192.168.173.37", &host_addr.sin_addr);
 	
 	cout<<inet_ntoa(host_addr.sin_addr)<<endl;
-	memset(&(host_addr.sin_zero), '\0', 8);
+	memset(&(host_addr.sin_zero), '\0', 8);*/
 	
-	if (bind(sockfd, (struct sockaddr *)&host_addr, sizeof(struct sockaddr))!=-1)
+void * tmpAddrPtr=NULL;
+tmpAddrPtr = &((struct sockaddr_in *)ifa->ifa_addr)->sin_addr;
+char addressBuffer[INET_ADDRSTRLEN];
+inet_ntop(AF_INET, tmpAddrPtr, addressBuffer, INET_ADDRSTRLEN)'
+printf("%s IP Address %s\n", ifa - > ifa_name, addressBuffer);
+
+	if (bind(sockfd, (struct sockaddr_in *)&host_addr, sizeof(struct sockaddr_in))!=-1)
 		cout << "bind addr_iface and num_port..." << bind << endl;
 
 	if (listen(sockfd, 5)!=-1)
