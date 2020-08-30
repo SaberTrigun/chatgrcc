@@ -7,8 +7,10 @@
 #include "f_dump.hpp"
 #include <arpa/inet.h>
 #include <fstream>
-#include <ifaddrs.h>
-#include <sys/types.h>
+#include "/usr/include/linux/if.h"
+//#include <net/if.h>
+#include <sys/ioctl.h>
+#include "/usr/include/linux/sockios.h"
 using namespace std;
 
 //Функция записи истории в файл
@@ -38,12 +40,13 @@ string f_readFlile(string *cmd_history){
 }
 
 int main(){
-	int 		sockfd, new_sockfd, yes=1, snd, rcv;
-	const int 	PORT = 7890;
-	char 		buf[1024];
-	struct 		host_addr, client_addr;
-	socklen_t 	sin_size;
-	vector <char> 	send_msg={'X'};
+	int			sockfd, new_sockfd, yes=1, snd, rcv;
+	const int		PORT = 7890;
+	char			buf[1024];
+	struct sockaddr_in 	host_addr, client_addr;
+	socklen_t		sin_size;
+	vector <char>		send_msg={'X'};
+	string			ifr_name1;
 
 	if ((sockfd = socket(PF_INET, SOCK_STREAM, 0))!=-1)
 		cout << "sockfd create......" << sockfd << endl;
@@ -51,20 +54,17 @@ int main(){
 	if (setsockopt(sockfd, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(int))!=-1)
 		cout << "setsockopt accepted......" << setsockopt << endl;
 
-	/*host_addr.sin_family = AF_INET;
+	host_addr.sin_family = AF_INET;
 	host_addr.sin_port = htons(PORT);
-	inet_aton("192.168.173.37", &host_addr.sin_addr);
+	memset(&(host_addr.sin_zero), '\0', sizeof(host_addr.sin_zero));
+//strcpy(ifr_name, "enp0s3");
+ioctl(sockfd, SIOCGIFADDR, (struct sockaddr *)&host_addr);
+	//inet_aton(, &host_addr.sin_addr);
 	
 	cout<<inet_ntoa(host_addr.sin_addr)<<endl;
-	memset(&(host_addr.sin_zero), '\0', 8);*/
 	
-void * tmpAddrPtr=NULL;
-tmpAddrPtr = &((struct sockaddr_in *)ifa->ifa_addr)->sin_addr;
-char addressBuffer[INET_ADDRSTRLEN];
-inet_ntop(AF_INET, tmpAddrPtr, addressBuffer, INET_ADDRSTRLEN)'
-printf("%s IP Address %s\n", ifa - > ifa_name, addressBuffer);
-
-	if (bind(sockfd, (struct sockaddr_in *)&host_addr, sizeof(struct sockaddr_in))!=-1)
+cout << inet_ntoa(host_addr.sin_addr) << endl;
+	if (bind(sockfd, (struct sockaddr *)&host_addr, sizeof(struct sockaddr))!=-1)
 		cout << "bind addr_iface and num_port..." << bind << endl;
 
 	if (listen(sockfd, 5)!=-1)
