@@ -8,9 +8,7 @@
 #include <arpa/inet.h>
 #include <fstream>
 #include "/usr/include/linux/if.h"
-//#include <net/if.h>
-#include <sys/ioctl.h>
-#include "/usr/include/linux/sockios.h"
+#include <netdb.h>
 using namespace std;
 
 //Функция записи истории в файл
@@ -45,8 +43,7 @@ int main(){
 	char			buf[1024];
 	struct sockaddr_in 	host_addr, client_addr;
 	socklen_t		sin_size;
-	vector <char>		send_msg={'X'};
-	string			ifr_name1;
+	struct hostent		*srvName;
 
 	if ((sockfd = socket(PF_INET, SOCK_STREAM, 0))!=-1)
 		cout << "sockfd create......" << sockfd << endl;
@@ -54,17 +51,25 @@ int main(){
 	if (setsockopt(sockfd, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(int))!=-1)
 		cout << "setsockopt accepted......" << setsockopt << endl;
 
-	host_addr.sin_family = AF_INET;
-	host_addr.sin_port = htons(PORT);
-	memset(&(host_addr.sin_zero), '\0', sizeof(host_addr.sin_zero));
-//strcpy(ifr_name, "enp0s3");
-ioctl(sockfd, SIOCGIFADDR, (struct sockaddr *)&host_addr);
-	//inet_aton(, &host_addr.sin_addr);
+	srvName=gethostbyname("sockchat");
+	if (srvName== NULL) {
+		herror("gethostbyname");
+		exit(1);
+	}
 	
-	cout<<inet_ntoa(host_addr.sin_addr)<<endl;
+	cout << "Name:         " << srvName -> h_name << endl;
+	cout << "IP address:   " << inet_ntoa(*(struct in_addr*)srvName -> h_addr) << endl;
+	cout << "Type address: " << srvName -> h_addrtype << endl;
+
+	host_addr.sin_family = srvName -> h_addrtype;
+	host_addr.sin_port   = htons(PORT);
+	memset (&(host_addr.sin_zero), '\0', sizeof(host_addr.sin_zero));
+	inet_aton(inet_ntoa(*(struct in_addr*)srvName -> h_addr), &host_addr.sin_addr);
 	
-cout << inet_ntoa(host_addr.sin_addr) << endl;
-	if (bind(sockfd, (struct sockaddr *)&host_addr, sizeof(struct sockaddr))!=-1)
+
+
+
+	if (bind(sockfd, (struct , sizeof())!=-1)
 		cout << "bind addr_iface and num_port..." << bind << endl;
 
 	if (listen(sockfd, 5)!=-1)
