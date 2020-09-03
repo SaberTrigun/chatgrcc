@@ -9,6 +9,8 @@
 #include <fstream>
 #include "/usr/include/linux/if.h"
 #include <netdb.h>
+#include <unistd.h>
+#include <limits.h>
 using namespace std;
 
 //Функция записи истории в файл
@@ -44,6 +46,7 @@ int main(){
 	struct sockaddr_in 	host_addr, client_addr;
 	socklen_t		sin_size;
 	struct hostent		*srvName;
+	char			hostname[HOST_NAME_MAX];
 
 	if ((sockfd = socket(PF_INET, SOCK_STREAM, 0))!=-1)
 		cout << "sockfd create......" << sockfd << endl;
@@ -51,7 +54,8 @@ int main(){
 	if (setsockopt(sockfd, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(int))!=-1)
 		cout << "setsockopt accepted......" << setsockopt << endl;
 
-	srvName=gethostbyname("sockchat");
+	gethostname(hostname, HOST_NAME_MAX);
+	srvName=gethostbyname(hostname);
 	if (srvName== NULL) {
 		herror("gethostbyname");
 		exit(1);
@@ -67,7 +71,7 @@ int main(){
 	memset (&(host_addr.sin_zero), '\0', sizeof(host_addr.sin_zero));
 	
 
-	if (bind(sockfd, (struct, sizeof())!=-1))
+	if (bind(sockfd, (struct sockaddr *)&host_addr, sizeof(struct sockaddr))!=-1)
 		cout << "bind addr_iface and num_port..." << bind << endl;
 
 	if (listen(sockfd, 5)!=-1)
@@ -75,7 +79,7 @@ int main(){
 
 
 
-/*	while(1)
+	while(1)
 	{
 		sin_size=sizeof(struct sockaddr_in);
 		new_sockfd=accept(sockfd, (struct sockaddr *)&client_addr, &sin_size);
@@ -94,5 +98,5 @@ int main(){
 
 
 		close (new_sockfd);
-	}*/
+	}
 }
