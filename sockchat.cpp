@@ -63,19 +63,19 @@ int main(){
 
 	host_addr.sin_family = srvName -> h_addrtype;
 	host_addr.sin_port   = htons(PORT);
-	memset (&(host_addr.sin_zero), '\0', sizeof(host_addr.sin_zero));
 	inet_aton(inet_ntoa(*(struct in_addr*)srvName -> h_addr), &host_addr.sin_addr);
+	memset (&(host_addr.sin_zero), '\0', sizeof(host_addr.sin_zero));
 	
 
-
-
-	if (bind(sockfd, (struct , sizeof())!=-1)
+	if (bind(sockfd, (struct, sizeof())!=-1))
 		cout << "bind addr_iface and num_port..." << bind << endl;
 
 	if (listen(sockfd, 5)!=-1)
 		cout << "waiting connections......" << listen << endl;
 
-	while(1)
+
+
+/*	while(1)
 	{
 		sin_size=sizeof(struct sockaddr_in);
 		new_sockfd=accept(sockfd, (struct sockaddr *)&client_addr, &sin_size);
@@ -94,5 +94,5 @@ int main(){
 
 
 		close (new_sockfd);
-	}
+	}*/
 }
