@@ -8,6 +8,7 @@
 #include "f_dump.hpp"
 using namespace std;
 
+//Функция приёма сообщений
 string f_recv(int sockfd, int new_sockfd){
 	char buf[1024];
 	new_sockfd=recv(sockfd, buf, 30, 0);
@@ -16,6 +17,7 @@ string f_recv(int sockfd, int new_sockfd){
 	cout << endl;
 }
 
+//Функция отправки сообщений
 bool f_send(int sockfd, int new_sockfd, string message){
 	bool flag;
 	new_sockfd = send(sockfd, message.c_str(), message.size(), 0);
@@ -33,7 +35,6 @@ int main(){
 	char 		buf[1024];
 	struct 		sockaddr_in host_addr, client_addr, dest_srv_addr;
 	socklen_t 	sin_size;
-	vector <char> 	send_msg={'F'};
 	string 		message;
 	bool 		flag_send;	
 
@@ -48,6 +49,9 @@ int main(){
 
 	memset(&(host_addr.sin_zero), '\0', 8);
 	
+
+
+/*
 	new_sockfd=connect(sockfd, (struct sockaddr *)&client_addr, sizeof(client_addr));
 	if (new_sockfd)
 	{
@@ -69,12 +73,6 @@ int main(){
 		}	
 		flag_send = 0;	
 	}
-
-
-
-
-
-
-		
+*/
 	 
 }
