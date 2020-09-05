@@ -6,6 +6,9 @@
 #include <vector>
 #include <arpa/inet.h>
 #include "f_dump.hpp"
+#include <netdb.h>
+#include <unistd.h>
+#include <limits.h>
 using namespace std;
 
 //Функция приёма сообщений
@@ -37,18 +40,34 @@ int main(){
 	socklen_t 	sin_size;
 	string 		message;
 	bool 		flag_send;	
-
+	struct hostent	*srvName;
 	if ((sockfd = socket(PF_INET, SOCK_STREAM, 0))!=-1)
 		cout << "sockfd create......" << sockfd << endl;
 
-	client_addr.sin_family=AF_INET;
+
+
+	srvName=gethostbyname("datagram.ru");
+	if (srvName==NULL) {
+		herror("gethostbyname");
+		exit(1);
+	}
+	
+	cout << "Name:         " << srvName -> h_name << endl;
+	cout << "IP address:   " << inet_ntoa(*(struct in_addr*)srvName -> h_addr) << endl;
+	cout << "Type address: " << srvName -> h_addrtype << endl;
+
+
+
+
+
+
+
+	/*client_addr.sin_family=AF_INET;
 	client_addr.sin_port=htons(PORT);
 	inet_aton("192.168.173.37", &client_addr.sin_addr);
-
 	cout<<inet_ntoa(client_addr.sin_addr)<<endl;
-
 	memset(&(host_addr.sin_zero), '\0', 8);
-	
+	*/
 
 
 /*

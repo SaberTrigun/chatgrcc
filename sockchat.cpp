@@ -56,7 +56,7 @@ int main(){
 
 	gethostname(hostname, HOST_NAME_MAX);
 	srvName=gethostbyname(hostname);
-	if (srvName== NULL) {
+	if (srvName==NULL) {
 		herror("gethostbyname");
 		exit(1);
 	}
