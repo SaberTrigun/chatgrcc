@@ -33,14 +33,15 @@ bool f_send(int sockfd, int new_sockfd, string message){
 
 
 int main(){
-	int		sockfd, new_sockfd, yes=1, snd, rcv;
-	const int 	PORT = 7890;
-	char 		buf[1024];
-	struct 		sockaddr_in host_addr, client_addr, dest_srv_addr;
-	socklen_t 	sin_size;
-	string 		message;
-	bool 		flag_send;	
-	struct hostent	*srvName;
+	int			sockfd, new_sockfd, yes=1, snd, rcv;
+	const int 		PORT = 7890;
+	char 			buf[1024];
+	struct sockaddr_in 	host_addr, client_addr, dest_srv_addr;
+	socklen_t 		sin_size;
+	string 			message;
+	bool 			flag_send;	
+	struct hostent		*srvName;
+
 	if ((sockfd = socket(PF_INET, SOCK_STREAM, 0))!=-1)
 		cout << "sockfd create......" << sockfd << endl;
 
@@ -57,20 +58,14 @@ int main(){
 	cout << "Type address: " << srvName -> h_addrtype << endl;
 
 
+	client_addr.sin_family = srvName -> h_addrtype;
+	client_addr.sin_port   = htons(PORT);
+	inet_aton(inet_ntoa(*(struct in_addr*)srvName -> h_addr), &client_addr.sin_addr);
+	memset(&(host_addr.sin_zero), '\0', sizeof(host_addr.sin_zero));
+	
 
 
 
-
-
-	/*client_addr.sin_family=AF_INET;
-	client_addr.sin_port=htons(PORT);
-	inet_aton("192.168.173.37", &client_addr.sin_addr);
-	cout<<inet_ntoa(client_addr.sin_addr)<<endl;
-	memset(&(host_addr.sin_zero), '\0', 8);
-	*/
-
-
-/*
 	new_sockfd=connect(sockfd, (struct sockaddr *)&client_addr, sizeof(client_addr));
 	if (new_sockfd)
 	{
@@ -92,6 +87,6 @@ int main(){
 		}	
 		flag_send = 0;	
 	}
-*/
+
 	 
 }
