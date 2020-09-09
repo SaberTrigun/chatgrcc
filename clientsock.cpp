@@ -32,7 +32,7 @@ bool f_send(int sockfd, int new_sockfd, string message){
 
 
 
-int main(){
+int main(int argc, char *in_argv[]){
 	int			sockfd, new_sockfd, yes=1, snd, rcv;
 	const int 		PORT = 7890;
 	char 			buf[1024];
@@ -46,10 +46,14 @@ int main(){
 		cout << "sockfd create......" << sockfd << endl;
 
 
-
-	srvName=gethostbyname("datagram.ru");
-	if (srvName==NULL) {
+	if (in_argv[1]!=NULL)
+		srvName=gethostbyname(in_argv[1]);
+	else if (in_argv[1]==NULL)
+		srvName=gethostbyname("datagram.ru");
+	else if (srvName==NULL) 
+	{
 		herror("gethostbyname");
+		cout << "Failed to get server address" << endl;
 		exit(1);
 	}
 	
@@ -76,6 +80,8 @@ int main(){
 
 	cout << f_recv(sockfd, new_sockfd) << endl;
 
+cout << in_argv[1] << endl;
+/*
 	while (1)
 	{
 
@@ -88,5 +94,5 @@ int main(){
 		flag_send = 0;	
 	}
 
-	 
+*/	 
 }
