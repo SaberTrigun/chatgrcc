@@ -80,8 +80,7 @@ int main(int argc, char *in_argv[]){
 
 	cout << f_recv(sockfd, new_sockfd) << endl;
 
-cout << in_argv[1] << endl;
-/*
+
 	while (1)
 	{
 
@@ -94,5 +93,5 @@ cout << in_argv[1] << endl;
 		flag_send = 0;	
 	}
 
-*/	 
+	 
 }
