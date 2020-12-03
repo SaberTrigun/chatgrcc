@@ -17,8 +17,7 @@ using namespace std;
 string f_recv(int sockfd, int new_sockfd) {
 	char	buf[1024];
 	new_sockfd = recv(sockfd, buf, 34, 0);
-	for (int i=0; i<=33; i++)
-		return(buf);
+	return(buf);
 	cout << endl;
 }
 
