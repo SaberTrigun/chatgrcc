@@ -57,11 +57,17 @@ int main () {
 	if ((sockfd = socket(PF_INET, SOCK_STREAM, 0)) != -1) //Получаем tcp сокет типа Internet
 		cout << "sockfd create......" << sockfd << endl;
 	else
+	{
 		perror ("Error call socket");
+		exit (1);
+	}
 	if (setsockopt(sockfd, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(int)) != -1) // Установка параметров сокета 
 		cout << "setsockopt accepted......" << setsockopt << endl;
 	else
+	{
 		perror ("Error setsockopt");
+		exit (1);
+	}
 
 //Вывод отладочной информации	
 	cout << "Name:         " << srvName -> h_name << endl;
@@ -77,12 +83,17 @@ int main () {
 	if (bind(sockfd, (struct sockaddr *)&host_addr, sizeof(struct sockaddr))!=-1) //Биндим сокет
 		cout << "bind addr_iface and num_port..." << bind << endl;
 	else
+	{
 		perror ("Error bind");
+		exit (1);
+	}
 	if (listen(sockfd, 5)!=-1) // Прослушиваем
 		cout << "waiting connections......" << listen << endl;
 	else
+	{
 		perror ("Error listen");
-
+		exit (1);
+	}
 
 	while (1)
 	{
