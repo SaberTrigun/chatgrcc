@@ -16,7 +16,7 @@ using namespace std;
 //Функция приёма сообщений
 string f_recv(int sockfd, int new_sockfd) {
 	char	buf[1024];
-	new_sockfd = recv(sockfd, buf, 30, 0);
+	new_sockfd = recv(sockfd, buf, 34, 0);
 	for (int i=0; i<=33; i++)
 		return(buf);
 	cout << endl;
@@ -35,7 +35,7 @@ bool f_send(int sockfd, int new_sockfd, string message) {
 //Функция для отправки файла
 
 
-int main() {
+int main(int argc, char *in_argv[]) {
 	int			sockfd, new_sockfd, yes=1, snd, rcv;
 	const int		PORT = 7890;
 	char			buf[1024];
@@ -76,16 +76,14 @@ int main() {
 		exit(1);
 	}
 
-	cout << f_recv(sockfd, new_sockfd) << endl; //После коннекта с сервером принимаем приветственное сообщение
+	//cout << f_recv(sockfd, new_sockfd) << endl; //После коннекта с сервером принимаем приветственное сообщение
 
 	while (1)
 	{
 		getline(cin, message);
-		flag_send = f_send(sockfd, new_sockfd, message);// Вызываем функцию отправки сообщения передаём дескриптор_сокета, дескриптор_соединения и сообщение. Функция вернёт флаг 1 если сообщение отправлено 
+//		flag_send = f_send(sockfd, new_sockfd, message);// Вызываем функцию отправки сообщения передаём дескриптор_сокета, дескриптор_соединения и сообщение. Функция вернёт флаг 1 если сообщение отправлено 
 		if (flag_send == 0) //Если флаг = 0 то сообщение отправлено
 			cout << "Message sent!" << endl;
-		flag_sent = 0;//Обнуляем флаг 
+		flag_send = 0;//Обнуляем флаг 
 	}
 }
-
-
