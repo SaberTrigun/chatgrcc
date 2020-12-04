@@ -1,3 +1,6 @@
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <unistd.h>
 #include <iostream>
 #include <string.h>
 #include <sys/socket.h>
@@ -35,6 +38,20 @@ string f_readFile(string *cmd_fistory) {
 	if(!fs.is_open())
 		cout << "Error_open" << endl;
 	return history;
+}
+
+//Функция для передачи файла по сети
+void transfer_f() {
+	int		filefd, interimBuf;
+	const char	infile[] = "chat_history.log", *pointerInFile = infile;
+	char		buf[1024], *pointerBuf = buf;
+	filefd = open(pointerInFile, O_RDONLY);
+	if (filefd == -1)
+		perror("open");
+	interimBuf = read(filefd, pointerBuf, 1024);
+	if (close(filefd) == -1)
+		perror("close");	
+
 }
 
 int main () {

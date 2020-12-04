@@ -31,9 +31,6 @@ bool f_send(int sockfd, int new_sockfd, string message) {
 		return(flag = 0);
 }
 
-//Функция для отправки файла
-
-
 int main(int argc, char *in_argv[]) {
 	int			sockfd, new_sockfd, yes=1, snd, rcv;
 	const int		PORT = 7890;
@@ -75,12 +72,12 @@ int main(int argc, char *in_argv[]) {
 		exit(1);
 	}
 
-	//cout << f_recv(sockfd, new_sockfd) << endl; //После коннекта с сервером принимаем приветственное сообщение
+	cout << f_recv(sockfd, new_sockfd) << endl; //После коннекта с сервером принимаем приветственное сообщение
 
 	while (1)
 	{
 		getline(cin, message);
-//		flag_send = f_send(sockfd, new_sockfd, message);// Вызываем функцию отправки сообщения передаём дескриптор_сокета, дескриптор_соединения и сообщение. Функция вернёт флаг 1 если сообщение отправлено 
+		flag_send = f_send(sockfd, new_sockfd, message);// Вызываем функцию отправки сообщения передаём дескриптор_сокета, дескриптор_соединения и сообщение. Функция вернёт флаг 1 если сообщение отправлено 
 		if (flag_send == 0) //Если флаг = 0 то сообщение отправлено
 			cout << "Message sent!" << endl;
 		flag_send = 0;//Обнуляем флаг 
