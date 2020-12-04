@@ -1,5 +1,3 @@
-#include <sys/stat.h>
-#include <fcntl.h>
 #include <iostream>
 #include <string.h>
 #include <sys/socket.h>
