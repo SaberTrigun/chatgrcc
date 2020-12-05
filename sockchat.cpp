@@ -40,17 +40,18 @@ string f_readFile(string *cmd_fistory) {
 }
 
 //Функция для передачи файла по сети
-void transfer_f() {
+void transferFileOut(int new_sockfd) {
 	int		filefd, interimBuf;
 	const char	infile[] = "chat_history.log", *pointerInFile = infile;
 	char		buf[1024], *pointerBuf = buf;
-	filefd = open(pointerInFile, O_RDONLY);
+	filefd = open(pointerInFile, O_RDONLY);//Открываем файл и получаем файловый дескриптор
 	if (filefd == -1)
 		perror("open");
-	interimBuf = read(filefd, pointerBuf, 1024);
+	interimBuf = read(filefd, pointerBuf, 1024); //Читаем файл и записываем в буфер
 	if (close(filefd) == -1)
 		perror("close");	
-
+	send(new_sockfd, pointerBuf, 1024, 0); 
+	
 }
 
 int main () {
@@ -125,6 +126,8 @@ int main () {
 			dump(buf, rcv);
 			f_writeFile(buf);//Запись истории в файл
 			rcv = recv(new_sockfd, buf, 1024, 0);
+			if (buf[0] == '!') //Проверяем является ли первый символ сообщения "!"
+				transferFileOut(new_sockfd);//Вызываем функцию для отправки файла
 		}	
 		close (new_sockfd);
 

@@ -19,7 +19,7 @@ string f_recv(int sockfd, int new_sockfd) {
 	cout << endl;
 }
 
-//функция отправки сообщений
+//Функция отправки сообщений
 bool f_send(int sockfd, int new_sockfd, string message) {
 	bool	flag;
 	new_sockfd = send(sockfd, message.c_str(), message.size(), 0);
@@ -27,6 +27,12 @@ bool f_send(int sockfd, int new_sockfd, string message) {
 		return(flag = 1);
 	else
 		return(flag = 0);
+}
+
+//Функция приёма файла
+void transferFileIn() {
+
+
 }
 
 int main(int argc, char *in_argv[]) {
@@ -64,7 +70,7 @@ int main(int argc, char *in_argv[]) {
 	if ((sockfd = socket(PF_INET, SOCK_STREAM, 0)) != -1) //Создаём сокет
 		cout << "sockfd create......" << sockfd << endl;
 	new_sockfd = connect(sockfd, (struct sockaddr *)&client_addr, sizeof(client_addr)); //Отправляем соединение на адрес сервера
-	if (new_sockfd)
+	if (new_sockfd < 0)
 	{
 		perror("error");
 		exit(1);
