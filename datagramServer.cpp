@@ -15,6 +15,22 @@
 #include <limits.h>
 using namespace std; // так лучше не делать
 
+
+class netConf {
+	private:
+		int			sockfd, new_sockfd, yes, snd, rcv;
+		const int		PORT;
+		vector <char>		buf;
+		char			hostname[HOST_NAME_MAX];
+		struct sockaddr_in	host_addr, client_addr;
+		socklen_t		sin_size;
+		struct hostent		*srvName;
+	public:
+
+};
+
+
+
 //Функция записи истории в файл
 //Эту функцию со временем переписать для ухода от библиотеки fstream
 void f_writeFile(const char *data_buffer) {
