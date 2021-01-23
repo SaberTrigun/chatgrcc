@@ -15,7 +15,7 @@
 #include <limits.h>
 using namespace std; // так лучше не делать
 
-
+//Всё переделываем под КЛАССЫ
 class netConf {
 	private:
 		int			sockfd, new_sockfd, yes, snd, rcv;
@@ -26,6 +26,12 @@ class netConf {
 		socklen_t		sin_size;
 		struct hostent		*srvName;
 	public:
+		netConf() : PORT(7890)
+	{}
+		int get_netConf() 
+		{
+			return PORT;
+		}
 
 };
 
@@ -73,7 +79,7 @@ void transferFileOut(int new_sockfd) {
 int main () {
 	
 	int			sockfd, new_sockfd, yes=1, snd, rcv;
-	const int		PORT = 7890;
+	netConf			netPort;
 	char			buf[1024], hostname[HOST_NAME_MAX];
 	struct	sockaddr_in	host_addr, client_addr;
 	socklen_t		sin_size;
@@ -108,7 +114,7 @@ int main () {
 	cout << "Type address: " << srvName -> h_addrtype << endl;
 //Приведение адреса и порта к нужному виду
 	host_addr.sin_family = srvName -> h_addrtype;
-	host_addr.sin_port   = htons(PORT);
+	host_addr.sin_port   = htons(netPort.get_netConf());
 	inet_aton(inet_ntoa(*(struct in_addr*)srvName -> h_addr), &host_addr.sin_addr);
 	memset (&(host_addr.sin_zero), '\0', sizeof(host_addr.sin_zero));
 
