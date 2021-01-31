@@ -30,11 +30,23 @@ class netConf {
 		int get_netPort() 
 		{ return PORT; }
 
-		string getNameServer() {
-			string	serverName;
+		string getName() {
+			string	name;
 			gethostname(hostname, HOST_NAME_MAX);
 			srvName = gethostbyname(hostname);
-			return serverName = srvName -> h_name;
+			return name = srvName -> h_name;
+		}
+		char* getAddr() {
+			char	*addr;
+			gethostname(hostname, HOST_NAME_MAX);
+			srvName = gethostbyname(hostname);
+			return addr = srvName -> h_addr_list[0];
+		}	
+		int getTypeAddr() {
+			int typeAddr;
+			gethostname(hostname, HOST_NAME_MAX);
+			srvName = gethostbyname(hostname);
+			return typeAddr = srvName -> h_addrtype;
 		}
 
 };
@@ -83,20 +95,11 @@ void transferFileOut(int new_sockfd) {
 int main () {
 	
 	int			sockfd, new_sockfd, yes=1, snd, rcv;
-	char			buf[1024], hostname[HOST_NAME_MAX]; //Переменная HOST_NAME_MAX массива hostname определена в какой то либе!
+	char			buf[1024]; //Переменная HOST_NAME_MAX массива hostname определена в какой то либе!
 	struct	sockaddr_in	host_addr, client_addr;
 	socklen_t		sin_size;
-	struct hostent		*srvName;	
 
 	netConf			confServer;
-
-//Получаем ip аддресс по имени 
-	gethostname(hostname, HOST_NAME_MAX);
-	srvName = gethostbyname(hostname);
-	if(srvName == NULL) {
-		herror("gethostbyname");
-		exit(1);
-	}
 
 	if ((sockfd = socket(PF_INET, SOCK_STREAM, 0)) != -1) //Получаем tcp сокет типа Internet
 		cout << "sockfd create......" << sockfd << endl;
@@ -114,13 +117,13 @@ int main () {
 	}
 
 //Вывод отладочной информации	
-	cout << "Name:         " << srvName -> h_name << endl;
-	cout << "IP address:   " << inet_ntoa(*(struct in_addr*)srvName -> h_addr) << endl;
-	cout << "Type address: " << srvName -> h_addrtype << endl;
+	cout << "Name:         " << confServer.getName() << endl;
+	cout << "IP address:   " << inet_ntoa(*(struct in_addr*)confServer.getAddr()) << endl;
+	cout << "Type address: " << confServer.getTypeAddr() << endl;
 //Приведение адреса и порта к нужному виду
-	host_addr.sin_family = srvName -> h_addrtype;
+	host_addr.sin_family = confServer.getTypeAddr();
 	host_addr.sin_port   = htons(confServer.get_netPort());
-	inet_aton(inet_ntoa(*(struct in_addr*)srvName -> h_addr), &host_addr.sin_addr);
+	inet_aton(inet_ntoa(*(struct in_addr*)confServer.getAddr()), &host_addr.sin_addr);
 	memset (&(host_addr.sin_zero), '\0', sizeof(host_addr.sin_zero));
 
 
@@ -160,7 +163,7 @@ int main () {
 
 	}
 
-
+	return 0;
 
 }
 
