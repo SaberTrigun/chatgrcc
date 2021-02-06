@@ -18,34 +18,38 @@ using namespace std; // так лучше не делать
 class netConf {
 	private:
 		int			sockfd, new_sockfd, yes, snd, rcv;
-		const int		PORT;
+		const int		Port;
 		vector <char>		buf;
-		char			hostname[HOST_NAME_MAX];
+		char			hostname[HOST_NAME_MAX];//Переменная HOST_NAME_MAX массива hostname определена в какой то либе!
 		struct sockaddr_in	host_addr, client_addr;
 		socklen_t		sin_size;
 		struct hostent		*srvName;
 	public:
-		netConf() : PORT(7890), yes(1)
-	{}
+		netConf() : Port(7890), yes(1)
+		{}
+
 		int get_netPort() 
-		{ return PORT; }
+		{ return Port; }
+
+		hostent* giveMeName()
+		{
+			gethostname(hostname, HOST_NAME_MAX);
+			return srvName = gethostbyname(hostname);
+		}
 
 		string getName() {
 			string	name;
-			gethostname(hostname, HOST_NAME_MAX);
-			srvName = gethostbyname(hostname);
+			giveMeName();
 			return name = srvName -> h_name;
 		}
 		char* getAddr() {
 			char	*addr;
-			gethostname(hostname, HOST_NAME_MAX);
-			srvName = gethostbyname(hostname);
+			giveMeName();
 			return addr = srvName -> h_addr_list[0];
 		}	
 		int getTypeAddr() {
 			int typeAddr;
-			gethostname(hostname, HOST_NAME_MAX);
-			srvName = gethostbyname(hostname);
+			giveMeName();
 			return typeAddr = srvName -> h_addrtype;
 		}
 
@@ -95,7 +99,7 @@ void transferFileOut(int new_sockfd) {
 int main () {
 	
 	int			sockfd, new_sockfd, yes=1, snd, rcv;
-	char			buf[1024]; //Переменная HOST_NAME_MAX массива hostname определена в какой то либе!
+	char			buf[1024]; 
 	struct	sockaddr_in	host_addr, client_addr;
 	socklen_t		sin_size;
 
