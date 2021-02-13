@@ -17,7 +17,7 @@ using namespace std; // так лучше не делать
 //Всё переделываем под КЛАССЫ
 class netConf {
 	private:
-		int			sockfd, new_sockfd, yes, snd, rcv;
+		int			sockfd, new_sockfd, yes, snd, rcv, setsockoptfd, bindfd, listenfd;
 		const int		Port;
 		vector <char>		buf;
 		char			hostname[HOST_NAME_MAX];//Переменная HOST_NAME_MAX массива hostname определена в какой то либе!
@@ -25,8 +25,13 @@ class netConf {
 		socklen_t		sin_size;
 		struct hostent		*srvName;
 	public:
-		netConf() : Port(7890), yes(1)
-		{}
+		netConf() : Port(7890), yes(1){
+			sockfd = socket(PF_INET, SOCK_STREAM, 0);
+			setsockoptfd = setsockopt(sockfd, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(int));
+			bindfd = bind(sockfd,(struct sockaddr *)&host_addr, sizeof(struct sockaddr));
+			listenfd = listen(sockfd, 5);
+		}
+
 
 		int get_netPort() 
 		{ return Port; }
@@ -52,6 +57,11 @@ class netConf {
 			giveMeName();
 			return typeAddr = srvName -> h_addrtype;
 		}
+
+		int getSocketfd() {return sockfd;}
+		int getSetsockoptfd() {return setsockoptfd;}
+		int getBindfd() {return bindfd;}
+		int getListenfd() {return listenfd;}
 
 };
 
@@ -105,7 +115,7 @@ int main () {
 
 	netConf			confServer;
 
-	if ((sockfd = socket(PF_INET, SOCK_STREAM, 0)) != -1) //Получаем tcp сокет типа Internet
+	/*if ((sockfd = socket(PF_INET, SOCK_STREAM, 0)) != -1) //Получаем tcp сокет типа Internet
 		cout << "sockfd create......" << sockfd << endl;
 	else
 	{
@@ -118,7 +128,7 @@ int main () {
 	{
 		perror ("Error setsockopt");
 		exit (1);
-	}
+	}*/
 
 //Вывод отладочной информации	
 	cout << "Name:         " << confServer.getName() << endl;
@@ -130,8 +140,14 @@ int main () {
 	inet_aton(inet_ntoa(*(struct in_addr*)confServer.getAddr()), &host_addr.sin_addr);
 	memset (&(host_addr.sin_zero), '\0', sizeof(host_addr.sin_zero));
 
+	cout << "Socketfd create........" 		<< confServer.getSocketfd() << endl;
+	cout << "Setsockopt accepted...."		<< confServer.getSetsockoptfd() << endl;
+	cout << "Bind addr_iface and num port...."	<< confServer.getBindfd() << endl;
+	cout << "Waiting connections............."	<< confServer.getListenfd() << endl;
 
-	if (bind(sockfd, (struct sockaddr *)&host_addr, sizeof(struct sockaddr))!=-1) //Биндим сокет
+
+
+	/*if (bind(sockfd, (struct sockaddr *)&host_addr, sizeof(struct sockaddr))!=-1) //Биндим сокет
 		cout << "bind addr_iface and num_port..." << bind << endl;
 	else
 	{
@@ -144,12 +160,13 @@ int main () {
 	{
 		perror ("Error listen");
 		exit (1);
-	}
+	}*/
 
-	while (1)
+	/*while (1)
 	{
 		sin_size = sizeof(struct sockaddr_in);
-		new_sockfd = accept(sockfd, (struct sockaddr *)&client_addr, &sin_size); //Принимаем входящее соединение
+		confServer.getNewsockfd();
+		//new_sockfd = accept(confServer.getSocketfd(), (struct sockaddr *)&client_addr, &sin_size); //Принимаем входящее соединение
 		if (new_sockfd != -1)
 			cout << "Connecting......" << endl << "incoming connection" << endl;
 		send(new_sockfd, "Hy, welcome to datagram.com!!! 0_0", 34, 0); //Отправляем приветственное сообщене клиенту
@@ -165,7 +182,7 @@ int main () {
 		}	
 		close (new_sockfd);
 
-	}
+	}*/
 
 	return 0;
 
